@@ -12,9 +12,23 @@ clock  = py.time.Clock()
 
 balls = []
 
-colors = [(250,250,250), (250, 0, 250), (0, 250, 0), (0,250, 250), (0,0,250), (150, 150, 0), (230, 40, 69), (57, 67, 123) ]
+colors = [
+    (255, 255, 255), (0, 0, 0), (255, 0, 0), (0, 255, 0), (0, 0, 255),
+    (255, 255, 0), (0, 255, 255), (255, 0, 255), (192, 192, 192), (128, 128, 128),
+    (128, 0, 0), (128, 128, 0), (0, 128, 0), (128, 0, 128), (0, 128, 128), (0, 0, 128),
+    (255, 165, 0), (255, 215, 0), (173, 255, 47), (50, 205, 50), (34, 139, 34),
+    (60, 179, 113), (46, 139, 87), (144, 238, 144), (152, 251, 152), (143, 188, 143),
+    (0, 100, 0), (0, 250, 154), (0, 255, 127), (127, 255, 0), (124, 252, 0),
+    (0, 191, 255), (30, 144, 255), (100, 149, 237), (70, 130, 180), (176, 196, 222),
+    (65, 105, 225), (138, 43, 226), (75, 0, 130), (106, 90, 205), (123, 104, 238),
+    (221, 160, 221), (238, 130, 238), (218, 112, 214), (199, 21, 133), (255, 105, 180),
+    (255, 20, 147), (219, 112, 147), (139, 69, 19), (160, 82, 45), (210, 105, 30),
+    (205, 92, 92), (233, 150, 122), (250, 128, 114), (255, 160, 122), (255, 99, 71)
+]
+
 
 gravity = 9
+mass = 2
 font = py.font.SysFont('Arial', 20)
 
 class Ball:
@@ -22,7 +36,6 @@ class Ball:
     def __init__(self, position):
         self.position = list(position)
         self.velocity = 0
-        self.mass = 2
         self.color = random.choice(colors)
 
         self.counter = 0
@@ -31,7 +44,7 @@ class Ball:
 
 
     def physcis(self):
-        fg = self.mass* gravity
+        fg = mass* gravity
     
 
     
@@ -67,7 +80,7 @@ class Ball:
     
     def timer(self):
         self.counter += 1
-        return self.counter < 500
+        return self.counter < 1000
 
 
 
@@ -91,6 +104,14 @@ def text():
     screen.blit(text_surface_1, text_rect_1)
 
 
+
+    txt_2 = f"mass: {mass} (press w and/ or  s to change)"
+    text_surface_2 = font.render(txt_2, True, (250,250,250)) 
+    text_rect_2 = text_surface_2.get_rect()
+    text_rect_2.center = (248, 45)
+    screen.blit(text_surface_2, text_rect_2)    
+
+
 running = True
 while running:
     for event in py.event.get():
@@ -108,6 +129,13 @@ while running:
             elif event.key == py.K_DOWN:
                     gravity -= 1
 
+            
+            if event.key == py.K_w:
+                mass += 0.5
+            elif event.key == py.K_s:
+                if mass == 0: break
+                
+                mass -= 0.5
 
 
 
@@ -130,4 +158,3 @@ while running:
 
     py.display.flip()   
     clock.tick(100)
-
